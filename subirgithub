@@ -1,0 +1,10 @@
+pautas para git hub:
+1.- crear el repositorio en github
+2.- inicializas los archivos con git 
+3.-git init -- git add . --- git commit -m  
+4.- la ubicacion del archivo a enviar
+	*  git remote add origin https://github.com/macu2020/uploadImagenPhp
+5.- despues pones el push
+	git push origin master
+6.- pzra segir mandando solo poner un git add. y despues git push origin master
+nota : si no estas logeado te tienes ke logear
