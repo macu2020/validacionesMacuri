@@ -1,0 +1,71 @@
+Tema: Validación de PHP
+1.-validar nombres  y apellidos
+•	Solo debe tener caracteres a-z A-Z (incluida la letra Ñ y espacios).
+•	Un mínimo de 3 caracteres (sin contar con espacios)
+•	Un máximo de 18 caracteres en el nombre y 36 en los apellidos.
+$validanom="/^(?=.{3,18}$)[a-zñA-ZÑ](\s?[a-zñA-ZÑ])*$/";
+$patron_texto = "/^[0-9a-zA-ZáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ\s]+$/";
+ 
+if (!preg_match($validanom,$datopost)) {
+    echo "El nombre tiene caracteres inválidos";
+}else{
+	echo "todo esta correcto macuri";
+}
+2.- para realizar una validación de una calle
+$calle="/[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*/";
+
+3.-Para teléfono
+$telefono="/0{0,2}([\+]?[\d]{1,3} ?)?([\(]([\d]{2,3})[)] ?)?[0-9][0-9 \-]{6,}( ?([xX]|([eE]xt[\.]?)) ?([\d]{1,5}))?/"; 
+ 
+1.	Para email
+$email="/[a-z0-9_\-]+(\.[_a-z0-9\-]+)*@([_a-z0-9\-]+\.)+([a-z]{2}|aero|asia|arpa|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|xxx)/";
+
+2.	Para nombre de un usuario
+"/[a-zA-Z]((\.|_|-)?[a-zA-Z0-9]+){3}/”
+Este es el nombre de usuario regular, debe comenzar con un carácter alfanumérico, debe ser de al menos 4 caracteres de longitud (puedes controlar la longitud eligiendo tu longitud mínima deseada, substrayendo uno de ella y poniendo ese número dentro de las llaves del final), puede contener números pero no comenzar con uno. También puede contener guiones bajos, puntos o guiones, pero no al comienzo o al final o tener más de uno junto (ae__, ae_- y ae._ serían inválidos).
+3.	Paranumeros entero sin 
+$numeentero="/^[0-9]{1,3}$/";
+El primero es: ^[0-9]{1,3}$
+Aquellas cadenas de numeros que comiencen y terminen con numeros y que su longitud sea de 1 a 3 caracteres.
+Validación con métodos 
+1.-/** * Método que valida si un texto no esta vacío * @param {string} - Texto a validar * @return {boolean} */
+ function validar_requerido(string $texto): bool { 
+return !(trim($texto) == '');
+ }
+
+2.-/** * Método que valida si es un número entero * @param {string} - Número a validar * @return {bool} */ 
+function validar_entero(string $numero): bool {
+ return (filter_var($numero, FILTER_VALIDATE_INT) === FALSE) ? False : True; 
+}
+3.-/** * Método que valida si el texto tiene un formato válido de E-Mail * @param {string} - Email * @return {bool} */
+ function validar_email(string $texto): bool {
+ return (filter_var($texto, FILTER_VALIDATE_EMAIL) === FALSE) ? False : True;
+ }
+
+Uso de estos metodos
+// Nombre if (!validar_requerido($nombre)) { 
+$errores[] = 'El campo Nombre es obligatorio.'; 
+} 
+// Edad if (!validar_entero($edad)) { 
+$errores[] = 'El campo de Edad debe ser un número.'; 
+} 
+// Email if (!validar_email($email)) {
+ $errores[] = 'El campo de Email tiene un formato no válido.';
+ }
+
+
+<!-- Mostramos errores por HTML --> 
+<?php if (isset($errores)): ?> 
+<ul class="errores"> 
+<?php foreach ($errores as $error) { 
+echo '<li>' . $error . '</li>'; } ?> 
+</ul> <?php endif; ?>
+Nota :para ke estos errores salgan en el mismo archivo están
+//metodos post
+function validaRequerido($valor){
+   if(trim($valor) == ''){
+      return false;
+   }else{
+      return true;
+   }
+}

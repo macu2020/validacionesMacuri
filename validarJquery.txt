@@ -1,0 +1,182 @@
+Tema: Validación de JQUERY
+/*** == Prevalidaciones macuri 2021 =============****/
+//    para NOMBRE   acepta letras y espacios unicamente
+ $("#name").bind('keypress', function(event) {
+	  var regex = new RegExp("^[a-zA-Z ]+$");
+	  var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	  if (!regex.test(key)) {
+	    event.preventDefault();
+	    return false;
+	  }
+ });
+ 
+//    para APELLIDO acepta letras y espacios unicamente
+ $("#lastname").bind('keypress', function(event) {
+	  var regex = new RegExp("^[a-zA-Z ]+$");
+	  var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	  if (!regex.test(key)) {
+	    event.preventDefault();
+	    return false;
+	   }
+ }); 
+//    para   DNI    acepte solo numeros
+ $("#textdni").bind('keypress', function(event) {
+	  var regex = new RegExp("^[0-9]+$");
+	  var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	  if (!regex.test(key)) {
+	    event.preventDefault();
+	    return false;
+	  }
+	   if (event.which < 48 || event.which > 57 || this.value.length === 8) {
+      return false;
+    }
+  }); 
+//    para NOMBRE DE LA EMPRESA
+ $("#nameEmp").bind('keypress', function(event) {
+	  var regex = new RegExp("^[a-zA-Z ]+$");
+	  var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	  if (!regex.test(key)) {
+	    event.preventDefault();
+	    return false;
+	  }
+ });
+
+//    para TELEFONO acepta numeros que sean(0,9)
+ $("#telefono").bind('keypress', function(event) {
+	  var regex = new RegExp("^[0-9]+$");
+	  var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	  if (!regex.test(key)) {
+	    event.preventDefault();
+	    return false;
+	  }
+	   if (event.which < 48 || event.which > 57 || this.value.length === 9) {
+      return false;
+     }
+ });
+ 
+//    para   EMAIL  acepte campos espceciales sino mostrar error 
+ $('#email').on('keypress', function() {
+    var re = /([A-Z0-9a-z_-][^@])+?@[^$#<>?]+?\.[\w]{2,4}/.test(this.value);
+    if(!re) { $('#error').show();
+    } else  { $('#error').hide();
+    }
+ });
+
+// VALIDACION --> ingreso de numero sin inicial 0 
+ $('#cant').on('input', function () { 
+    this.value = this.value.replace(/^0*/, '');
+});
+METODOS PARA POST  VALIDACIONES
+VALIDACION DE FECHA
+var validarCampoFecha = function(campo_fechaP){
+	var es_fecha = true;
+	//validar que tiene tres grupos separados por /
+	if(campo_fechaP.split("/").length != 3){
+		es_fecha = false;
+	}
+	//validar que el día, el mes y el año son numéricos
+	if(!$.isNumeric(campo_fechaP.split("/")[0]) || !$.isNumeric(campo_fechaP.split("/")[1]) || !$.isNumeric(campo_fechaP.split("/")[2])){
+			es_fecha = false;
+		}
+	//validar que el dia es  mayor que 0 y menor que 32
+	if(es_fecha){
+		if(campo_fechaP.split("/")[0] < 1 || campo_fechaP.split("/")[0] > 31){
+			es_fecha = false;
+		}
+	}
+	//validar que el mes es  mayor que 0 y menor que 13
+	if(es_fecha){
+		if(campo_fechaP.split("/")[1] < 1 || campo_fechaP.split("/")[1] > 12){
+			es_fecha = false;
+		}
+	}
+	//validar que el año es  mayor que 0 y menor que 13
+	if(es_fecha){
+		if(campo_fechaP.split("/")[2] < 1){
+			es_fecha = false;
+		}
+	}
+	return es_fecha;
+}
+// TELEFONO --> MAX.(9digitos) 
+	function validarCampoTelefono(campo_telefonoP){
+	var es_telefono = false;
+ 	if(campo_telefonoP.length === 9){
+			es_telefono = true;
+	}
+	//validar que todos son digitos
+	for(var i = 0; i < campo_telefonoP.length; i++){
+ 		if($.isNumeric(campo_telefonoP[i])){
+			es_telefono = true;
+		}
+	}
+	return es_telefono;
+ }
+
+
+ // METODO SOLO TEXTO Y LONGITUD
+ function validaTextLe(campo_text){
+  	var nombre =campo_text.val();
+  	var es_textolength  = false;
+ 	var expresion=new RegExp("^[a-zA-Z ]+$");
+ 	if (expresion.test(nombre) && nombre.length < '21' ) {
+ 		es_textolength= true;
+ 	} 
+ 	return es_textolength;
+ }
+function validadirecion(campo_direc){
+	var direccion =campo_direc.val();
+  	var es_textolength  = false;
+  	if (direccion.length < '36') {
+ 		es_textolength= true;
+  	}
+ 	return es_textolength;
+}
+
+// EMAIL --> Acepte campos espceciales   
+  	function validarCampoEmail(campo_emailP){
+	var es_email = true;
+	
+	if(campo_emailP.split("@").length != 2){ // solo una arroba
+		es_email = false;
+	}
+	
+	if(es_email){                           //no tiene espacios
+		if(campo_emailP.split("@")[0].split(" ").length > 1){
+			es_email = false;
+		}
+	}
+					//contener un punto entre el dominio y la extension
+	if(es_email){
+		if(campo_emailP.split("@")[1].split(".").length != 2){
+			es_email = false;
+		}
+	}
+	//validar que no contiene espacios ni en el dominio ni en la extension
+	if(es_email){
+		if(campo_emailP.split("@")[1].split(".")[0].split(" ").length > 1){
+			es_email = false;
+		}
+		if(campo_emailP.split("@")[1].split(".")[1].split(" ").length > 1){
+			es_email = false;
+		}
+	}
+	return es_email;
+ }
+EJEMPLO:
+if (validaTextLe($("#name"))=== false) {
+ 	errordatam($("#name"),$("#mennam"),'Solo se admiten letras, maximo 20 caracteres','Nombre')	 				              
+}
+
+//VALIDACION DE PREVIA IMAGEN DE PRODUCTO
+function validarExt(){
+    var archivoInput = document.getElementById('customFilepro');
+    var archivoRuta = archivoInput.value;
+    var extPermitidas = /(.jpg|.jpeg)$/i;
+    if(!extPermitidas.exec(archivoRuta)){
+    Swal.fire({ icon: 'error',title: 'Oops...',text: 'El formato tiene que ser una imagen : jpg,jpeg !!!',})
+        $("#img-show-prod").attr("src","../Assets/img/slide/sin-imgd.jpg");
+        archivoInput.value = '';
+        return false;
+    }   
+}
